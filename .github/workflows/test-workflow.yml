@@ -26,10 +26,10 @@ jobs:
       - name: Set target version
         id: target_version
         run: |
-          if [ "${{ inputs.custom-tag }}" == "" ]; then
+          if [ "${{ inputs.custom_tag }}" == "" ]; then
             echo "target_tag=${{ steps.github_tag.outputs.new_tag }}-SNAPSHOT" >> $GITHUB_ENV
           else
-            echo "target_tag=${{ inputs.custom-tag }}" >> $GITHUB_ENV
+            echo "target_tag=${{ inputs.custom_tag }}" >> $GITHUB_ENV
           fi
       - name: Target version
         run: |
