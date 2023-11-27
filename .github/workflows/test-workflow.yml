@@ -23,6 +23,6 @@ jobs:
         with:
           fetch-depth: '0'
       - name: Test composite workflow
-        uses: ./.github/workflows/actions/custom-workflow
+        uses: ./.github/workflows/action/custom-workflow
         with:
           CUSTOM_TAG: ${{ inputs.custom_tag }}
