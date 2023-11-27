@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     custom_tag:
       description: Custom version
-      required: false
+      required: true
       type: string
       default: dev
 
