@@ -10,5 +10,6 @@ runs:
   using: composite
   steps:
     - name: Pipeline Inputs
+      shell: bash
       run: |
           echo "release_type: ${{ inputs.CUSTOM_TAG }}"
