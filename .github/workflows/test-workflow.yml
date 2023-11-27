@@ -27,14 +27,13 @@ jobs:
         id: target_version
         run: |
           if [ "${{ inputs.custom-tag }}" == "" ]; then
-            target_tag: "${{ steps.github_tag.outputs.new_tag }}-SNAPSHOT"
+            echo "target_tag=${{ steps.github_tag.outputs.new_tag }}-SNAPSHOT" >> $GITHUB_ENV
           else
-            target_tag: "${{ inputs.custom-tag }}"
+            echo "target_tag=${{ inputs.custom-tag }}" >> $GITHUB_ENV
           fi
-          echo "::set-output name=version::$target_tag"
       - name: Target version
         run: |
-          echo "target version: ${{ steps.target_version.outputs.version }}"
+          echo "target version: ${{ env.target_tag }}"
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
