@@ -16,14 +16,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Pipeline Inputs
-        if: ${{ inputs.custom_tag == '' }}
         run: |
           echo "release_type: ${{ inputs.custom_tag }}"
-      - name: Pipeline Inputs on condition
-        id: snapshot_pom_version
-        if: ${{ inputs.custom_tag != '' }}
+      - name: set tag
+        id: github_tag
         run: |
-          echo "tag: ${{ inputs.custom_tag }}"
+          echo "::set-output name=new_tag::dummy"
+
+      - name: Set target version
+        id: target_version
+        run: |
+          if [ "${{ inputs.custom-tag }}" == "" ]; then
+            target_tag: ${{ steps.github_tag.outputs.new_tag }}-SNAPSHOT
+          else
+            target_tag: ${{ inputs.custom-tag }}
+          fi
+          echo "::set-output name=version::$target_tag"
+      - name: Target version
+        run: |
+          echo "target version: ${{ steps.target_version.outputs.version }}"
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
