@@ -1,0 +1,19 @@
+name: On push
+on:
+  push:
+    branches:
+      - development
+  workflow_dispatch:
+    custom_tag:
+      description: Custom version
+      required: false
+      type: string
+      default: dev
+
+jobs:
+  tag:
+    runs-on: [ 'ubuntu-latest' ]
+    steps:
+      - name: Pipeline Inputs
+        run: |
+          echo "release_type: ${{ inputs.custom_tag }}"
