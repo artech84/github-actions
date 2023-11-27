@@ -27,9 +27,9 @@ jobs:
         id: target_version
         run: |
           if [ "${{ inputs.custom-tag }}" == "" ]; then
-            target_tag: ${{ steps.github_tag.outputs.new_tag }}-SNAPSHOT
+            target_tag: "${{ steps.github_tag.outputs.new_tag }}-SNAPSHOT"
           else
-            target_tag: ${{ inputs.custom-tag }}
+            target_tag: "${{ inputs.custom-tag }}"
           fi
           echo "::set-output name=version::$target_tag"
       - name: Target version
