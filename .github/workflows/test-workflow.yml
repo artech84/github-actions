@@ -16,12 +16,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Pipeline Inputs
+        if: ${{ inputs.custom_tag == '' }}
+        id: snapshot_pom_version
         run: |
           echo "release_type: ${{ inputs.custom_tag }}"
       - name: Pipeline Inputs on condition
+        id: snapshot_pom_version
         if: ${{ inputs.custom_tag != '' }}
         run: |
-          echo "tag: custom applied"
+          echo "tag: ${{ inputs.custom_tag }}"
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
