@@ -4,11 +4,12 @@ on:
     branches:
       - development
   workflow_dispatch:
-    custom_tag:
-      description: Custom version
-      required: true
-      type: string
-      default: dev
+    inputs:
+      custom_tag:
+        description: Custom version
+        required: false
+        type: string
+        default: dev
 
 jobs:
   tag:
