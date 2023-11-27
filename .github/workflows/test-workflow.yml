@@ -18,3 +18,7 @@ jobs:
       - name: Pipeline Inputs
         run: |
           echo "release_type: ${{ inputs.custom_tag }}"
+      - name: Test composite workflow
+        uses: ./.github/actions/custom-workflow
+        with:
+          CUSTOM_TAG: ${{ inputs.custom_tag }}
