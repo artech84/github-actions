@@ -17,7 +17,6 @@ jobs:
     steps:
       - name: Pipeline Inputs
         if: ${{ inputs.custom_tag == '' }}
-        id: snapshot_pom_version
         run: |
           echo "release_type: ${{ inputs.custom_tag }}"
       - name: Pipeline Inputs on condition
