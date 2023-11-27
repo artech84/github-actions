@@ -18,6 +18,10 @@ jobs:
       - name: Pipeline Inputs
         run: |
           echo "release_type: ${{ inputs.custom_tag }}"
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
       - name: Test composite workflow
         uses: ./.github/actions/custom-workflow
         with:
