@@ -1,0 +1,41 @@
+name: On push
+on:
+  workflow_dispatch:
+    inputs:
+      custom_tag:
+        description: Custom tag
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Zulu JDK 17 setup
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+        distribution: 'zulu'
+
+    - name: Maven setup
+      uses: stCarolas/setup-maven@v4.5
+      with:
+        maven-version: 3.9.3
+
+    - name: Extract branch name
+      id: branch_name
+      shell: bash
+      run: |
+        echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+
+    - name: Get initial pom version
+      uses: avides/actions-project-version-check@v1.3.0
+      id: initial_pom_version
+      with:
+        only-return-version: true
+        file-to-check: pom.xml
+
+          
