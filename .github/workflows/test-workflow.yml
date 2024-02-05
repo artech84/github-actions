@@ -39,13 +39,19 @@ jobs:
         file-to-check: pom.xml
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Bump tag version
-      id: new_tag_version
-      uses: anothrNick/github-tag-action@1.52.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        INITIAL_VERSION: ${{ steps.initial_pom_version.outputs.version }}
-        WITH_V: false
-        PRERELEASE: true
+    - name: Bump version and push tag
+      id: tag_version
+      uses: miguelfito/github-bump-and-tag-action@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
+#    - name: Bump tag version
+#      id: new_tag_version
+#      uses: anothrNick/github-tag-action@1.52.0
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        INITIAL_VERSION: ${{ steps.initial_pom_version.outputs.version }}
+#        WITH_V: false
+#        PRERELEASE: true
 
           
