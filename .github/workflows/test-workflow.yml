@@ -38,4 +38,13 @@ jobs:
         only-return-version: true
         file-to-check: pom.xml
 
+    - name: Bump tag version if hotfix
+      id: new_tag_version
+      uses: anothrNick/github-tag-action@1.52.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        DEFAULT_BUMP: patch
+        INITIAL_VERSION: ${{ steps.initial_pom_version.outputs.version }}
+        WITH_V: false
+
           
