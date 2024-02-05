@@ -38,7 +38,7 @@ jobs:
         only-return-version: true
         file-to-check: pom.xml
 
-    - name: Bump tag version if hotfix
+    - name: Bump tag version
       id: new_tag_version
       uses: anothrNick/github-tag-action@1.52.0
       env:
