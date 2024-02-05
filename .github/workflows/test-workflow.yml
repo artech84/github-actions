@@ -37,6 +37,7 @@ jobs:
       with:
         only-return-version: true
         file-to-check: pom.xml
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Bump tag version
       id: new_tag_version
