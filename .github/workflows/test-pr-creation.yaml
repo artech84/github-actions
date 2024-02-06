@@ -16,7 +16,7 @@ jobs:
         with:
           fetch-depth: '0'
 
-      - name: Create PR to integration branch
+      - name: Create PR
         uses: peter-evans/create-pull-request@v6
         with:
           title: Update application version to 2.2.0-SNAPSHOT
