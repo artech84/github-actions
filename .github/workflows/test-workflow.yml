@@ -60,7 +60,7 @@ jobs:
       run: |
         snapshot="-SNAPSHOT"
         snapshot_version=${{ steps.initial_pom_version.outputs.version }}
-        release_version=-${snapshot_version%"$snapshot"}
+        release_version=${snapshot_version%"$snapshot"}
         git config --global user.name $GITHUB_ACTOR
         git config --global user.email ${{ env.GITHUB_ACTOR }}@bmw.com
         git checkout -b release/$release_version
