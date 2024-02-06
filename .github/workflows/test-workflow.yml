@@ -106,6 +106,7 @@ jobs:
         esac
         
         new_version="$major.$minor.$patch"
+        echo "BUMPEDVERSION=$new_version"
         echo "BUMPED_VERSION=$new_version" >> $GITHUB_ENV
         echo "IS_VERSION_BUMPED=$is_bumped" >> $GITHUB_ENV
 
