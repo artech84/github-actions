@@ -119,7 +119,7 @@ jobs:
         git commit -am "[Github SNAPSHOT version]: ${{ env.BUMPED_VERSION }}-SNAPSHOT"
         git push -u origin ${{ env.RELEASE_BRANCH }}
 
-#    - name: Create PR to integration branch
+#    - name: Create PR
 #      uses: peter-evans/create-pull-request@v6
 #      with:
 #        title: Update application version to ${{ env.BUMPED_VERSION }}-SNAPSHOT
