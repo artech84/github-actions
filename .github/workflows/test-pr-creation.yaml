@@ -1,0 +1,19 @@
+name: Create PR
+on:
+  workflow_dispatch:
+    inputs:
+      custom_tag:
+        description: Custom tag
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create PR to integration branch
+        uses: peter-evans/create-pull-request@v6
+        with:
+          title: Update application version to 2.2.0-SNAPSHOT
+          branch: release/2.1.0
+          base: test-tagging
