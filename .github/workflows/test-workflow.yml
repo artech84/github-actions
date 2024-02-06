@@ -124,7 +124,7 @@ jobs:
       with:
         title: Update application version to ${{ env.BUMPED_VERSION }}-SNAPSHOT
         branch: ${{ env.RELEASE_BRANCH }}
-        base: ${{ steps.extract_branch_name.outputs.branch }}
+        base: ${{ steps.branch_name.outputs.branch }}
         delete-branch: true
         author: ${{ github.actor }}
 
