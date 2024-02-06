@@ -126,7 +126,6 @@ jobs:
         branch: ${{ env.RELEASE_BRANCH }}
         base: ${{ steps.branch_name.outputs.branch }}
         delete-branch: true
-        author: ${{ github.actor }}
 
 #    - name: Bump tag version
 #      id: new_tag_version
