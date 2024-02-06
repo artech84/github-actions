@@ -6,6 +6,11 @@ on:
         description: Custom tag
         required: true
         type: string
+      VERSION_BUMP_TYPE:
+        required: false
+        description: Which version should be bumped, i.e., major, minor or patch
+        default: minor
+        type: string
 
 jobs:
   build:
@@ -38,12 +43,88 @@ jobs:
         only-return-version: true
         file-to-check: pom.xml
         token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Check if SNAPSHOT version exists
+      id: check_snapshot_version
+      shell: bash
+      run: |
+        if [ ${{ steps.initial_pom_version.outputs.version }} == *"-SNAPSHOT"* ]; then
+          is_exists = true
+        else
+          is_exists = false
+        echo "::set-output name=snapshot_exists::$is_exists"
 
-    - name: Bump version and push tag
-      id: tag_version
-      uses: miguelfito/github-bump-and-tag-action@v1
+    - name: UnSNAPSHOT POM Version
+      shell: bash
+      run: |
+        snapshot="-SNAPSHOT"
+        snapshot_version=${{ steps.initial_pom_version.outputs.version }}
+        release_version=-${snapshot_version%"$snapshot"}
+        git config --global user.name $GITHUB_ACTOR
+        git config --global user.email ${{ env.GITHUB_ACTOR }}@bmw.com
+        git checkout -b release/$release_version
+        mvn -V -B clean versions:set -DnewVersion=$release_version
+        find . -name 'pom.xml' | xargs git add
+        git commit -am "[Github release version]: $release_version"
+        git push -u origin release/$release_version
+        echo "RELEASE_VERSION=$release_version" >> $GITHUB_ENV
+        echo "RELEASE_BRANCH=release/$release_version" >> $GITHUB_ENV
+
+    - name: Tag the unSNAPSHOT version
+      shell: bash
+      run: |
+        git tag -a ${{ env.RELEASE_VERSION }} -m "[Github Tag version]: ${{ env.RELEASE_VERSION }}"
+        git push origin --tags
+
+    - name: Bump the version
+      shell: bash
+      run: |
+        is_bumped=true
+        current_version=${{ env.RELEASE_VERSION }}
+        IFS='.' read -a version_parts <<< "$current_version"
+        major=${version_parts[0]}
+        minor=${version_parts[1]}
+        patch=${version_parts[2]}
+        
+        case "${{ inputs.VERSION_BUMP_TYPE }}" in
+              "major")
+                  major=$((major + 1))
+                  minor=0
+                  patch=0
+                  ;;
+              "minor")
+                  minor=$((minor + 1))
+                  patch=0
+                  ;;
+              "patch")
+                  patch=$((patch + 1))
+                  ;;
+              *)
+                  echo -n "unknown bump type"
+                  is_bumped=false
+                  ;;
+        esac
+        
+        new_version="$major.$minor.$patch"
+        echo "BUMPED_VERSION=$new_version" >> $GITHUB_ENV
+        echo "IS_VERSION_BUMPED=$is_bumped" >> $GITHUB_ENV
+
+    - name: SNAPSHOT the version
+      shell: bash
+      run: |
+        mvn -V -B versions:set -DnewVersion=${{ env.BUMPED_VERSION }}-SNAPSHOT
+        find . -name 'pom.xml' | xargs git add
+        git commit -am "[Github SNAPSHOT version]: ${{ env.BUMPED_VERSION }}-SNAPSHOT"
+        git push -u origin ${{ env.RELEASE_BRANCH }}
+
+    - name: Create PR to integration branch
+      uses: peter-evans/create-pull-request@v6
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        title: Update application version to ${{ env.BUMPED_VERSION }}-SNAPSHOT
+        branch: ${{ env.RELEASE_BRANCH }}
+        base: ${{ steps.extract_branch_name.outputs.branch }}
+        delete-branch: true
+        author: ${{ github.actor }}
 
 #    - name: Bump tag version
 #      id: new_tag_version
