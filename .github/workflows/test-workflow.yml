@@ -64,7 +64,7 @@ jobs:
         git config --global user.name $GITHUB_ACTOR
         git config --global user.email ${{ env.GITHUB_ACTOR }}@bmw.com
         git checkout -b release/$release_version
-        mvn -V -B clean versions:set -DnewVersion=$release_version
+        mvn -V -B versions:set -DnewVersion=$release_version
         find . -name 'pom.xml' | xargs git add
         git commit -am "[Github release version]: $release_version"
         git push -u origin release/$release_version
