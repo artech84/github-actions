@@ -17,7 +17,14 @@ jobs:
           fetch-depth: '0'
           ref: release/2.1.0
 
-      - name: Create PR
-        run: gh pr create -B test-tagging -H release/2.1.0 --title 'Update application version to 2.2.0-SNAPSHOT' --body 'Update application version to 2.2.0-SNAPSHOT'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check if SNAPSHOT version exists
+        id: check_snapshot_version
+        shell: bash
+        run: |
+          if [ ${{ steps.initial_pom_version.outputs.version }} == *'-SNAPSHOT'* ]; then
+            is_exists=true
+          else
+            is_exists=false
+          fi
+          echo "::set-output name=snapshot_exists::$is_exists"
+          echo "$is_exists"
