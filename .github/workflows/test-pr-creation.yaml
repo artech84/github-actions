@@ -28,7 +28,7 @@ jobs:
         id: check_snapshot_version
         shell: bash
         run: |
-          if [ ${{ steps.initial_pom_version.outputs.version }} == *'-SNAPSHOT'* ]; then
+          if [ ${{ steps.initial_pom_version.outputs.version }} == *-SNAPSHOT* ]; then
             is_exists=true
           else
             is_exists=false
