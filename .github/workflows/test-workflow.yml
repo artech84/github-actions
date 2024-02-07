@@ -54,8 +54,10 @@ jobs:
             is_exists=false
           fi
           echo "::set-output name=snapshot_exists::$is_exists"
+          echo "$is_exists"
 
     - name: UnSNAPSHOT POM Version
+      if: ${{ steps.check_snapshot_version.outputs.snapshot_exists == 'true' }}
       shell: bash
       run: |
         snapshot="-SNAPSHOT"
