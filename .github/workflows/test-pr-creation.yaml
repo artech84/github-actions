@@ -18,8 +18,6 @@ jobs:
           ref: release/2.1.0
 
       - name: Create PR
-        uses: peter-evans/create-pull-request@v6
-        with:
-          title: Update application version to 2.2.0-SNAPSHOT
-          branch: release/2.1.0
-          base: test-tagging
+        run: gh pr create -B test-tagging -H release/2.1.0 --title 'Update application version to 2.2.0-SNAPSHOT' --body 'Update application version to 2.2.0-SNAPSHOT'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
