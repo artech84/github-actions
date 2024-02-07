@@ -120,7 +120,7 @@ jobs:
         git push -u origin ${{ env.RELEASE_BRANCH }}
 
     - name: Create PR
-      run: gh pr create -B test-tagging -H release/2.1.0 --title 'Update application version to 2.2.0-SNAPSHOT' --body 'Update application version to 2.2.0-SNAPSHOT'
+      run: gh pr create -B ${{ env.RELEASE_BRANCH }} -H ${{ steps.branch_name.outputs.branch }} --title 'Update application version to 2.2.0-SNAPSHOT' --body 'Update application version to 2.2.0-SNAPSHOT'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
