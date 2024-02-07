@@ -33,5 +33,11 @@ jobs:
           else
             is_exists=false
           fi
-          echo "::set-output name=snapshot_exists::$is_exists"
+          echo "SNAPSHOT_EXISTS=$is_exists" >> $GITHUB_ENV
           echo "$is_exists"
+
+      - name: Check if SNAPSHOT version exists
+        if: ${{ env.SNAPSHOT_EXISTS == 'true' }}
+        shell: bash
+        run: |
+          echo "Success"
